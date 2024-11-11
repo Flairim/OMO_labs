@@ -1,20 +1,19 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 
 def f(x):
     return x**2 + np.sin(x) - 12*x - 0.25
 
-# Метод дихотомії з апріорною і апостеріорною оцінками
 def bisection_method(f, a, b, tol):
     if f(a) * f(b) >= 0:
         raise ValueError("Функція повинна змінювати знак на кінцях інтервалу.")
     
-    # Апріорна оцінка кількості ітерацій
     apriori_estimate = int(np.ceil(np.log2((b - a) / tol)))
     print(f"Апріорна оцінка кількості ітерацій для методу дихотомії: {apriori_estimate}")
     
     iter_count = 0
-    stop_iter = 0  # для фіксації ітерації апостеріорної оцінки
+    stop_iter = 0 
     print("Метод дихотомії:")
     
     while iter_count < apriori_estimate:
@@ -23,7 +22,7 @@ def bisection_method(f, a, b, tol):
         print(f"Ітерація {iter_count}: c = {c}, f(c) = {f(c)}")
         
         if (b - a) / 2 <= tol and stop_iter == 0:
-            stop_iter = iter_count  # фіксуємо ітерацію, на якій зупинилася апостеріорна оцінка
+            stop_iter = iter_count  
         
         if f(c) == 0:
             print("Знайдено точний корінь.")
@@ -33,7 +32,6 @@ def bisection_method(f, a, b, tol):
         else:
             a = c
     
-    # Якщо апостеріорна оцінка не спрацювала раніше, зупиняємось на останній ітерації
     if stop_iter == 0:
         stop_iter = iter_count
     
@@ -46,39 +44,40 @@ eps = 0.0001
 root_bisect, steps_bisect = bisection_method(f, a, b, eps)
 print(f"Корінь методом дихотомії: {root_bisect}, кількість ітерацій апостеріорної оцінки: {steps_bisect}")
 
-# Метод простої ітерації з апріорною і апостеріорною оцінками
 def g(x):
     return (x**2 + np.sin(x) - 0.25) / 12
 
-def simple_iteration(g, x0, eps, max_iter=1000):
+def apriori_iteration_estimate(L, initial_error, eps):
+
+    return math.ceil(math.log((eps * (1 - L)) / initial_error) / math.log(L))
+
+def simple_iteration(f, g, x0, eps, L, initial_error):
+
+    apriori_estimate = apriori_iteration_estimate(L, initial_error, eps)
+    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
+
     iter_count = 0
     x_prev = x0
     x_next = g(x_prev)
-    
-    # Апріорна оцінка для методу простої ітерації (максимальна кількість ітерацій)
-    apriori_estimate = max_iter
-    print(f"\nАпріорна оцінка кількості ітерацій для методу простої ітерації: {apriori_estimate}")
-    
-    stop_iter = 0  # для фіксації ітерації апостеріорної оцінки
+
     print("Метод простої ітерації:")
-    print(f"Ітерація {iter_count}: x = {x_prev}")
+    print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
         iter_count += 1
         x_prev = x_next
         x_next = g(x_prev)
-        print(f"Ітерація {iter_count}: x = {x_next}")
+        print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
         
-        if abs(x_next - x_prev) <= eps and stop_iter == 0:
-            stop_iter = iter_count  # фіксуємо ітерацію, на якій зупинилася апостеріорна оцінка
-        
-    if stop_iter == 0:
-        stop_iter = iter_count
-    
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
-    return x_next, stop_iter
+        if abs(x_next - x_prev) <= eps:
+            break
+
+    print(f"Апостеріорна оцінка зупинилася на ітерації: {iter_count}")
+    return x_next, iter_count
 
 x0 = 2
+L = 0.5                  
+initial_error = abs(g(x0) - x0)
 
-root_iter, steps_iter = simple_iteration(g, x0, eps)
+root_iter, steps_iter = simple_iteration(f, g, x0, eps, L, initial_error)
 print(f"Корінь методом простої ітерації: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
