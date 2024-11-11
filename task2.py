@@ -73,8 +73,8 @@ def df(x):
 import numpy as np
 
 def newton_method(f, df, x0, eps):
-    # Обчислення апріорної оцінки кількості ітерацій
-    apriori_estimate = int(np.ceil(np.log2((x0 - (-x0)) / eps)))  # Прикладна апріорна оцінка на основі розміру інтервалу
+
+    apriori_estimate = int(np.ceil(np.log2((x0 - (-x0)) / eps)))
     
     iter_count = 0
     x_next = x0 - f(x0) / df(x0)
@@ -84,25 +84,21 @@ def newton_method(f, df, x0, eps):
     print(f"Апріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x0}, f(x) = {f(x0)}")
     
-    # Виконання ітерацій методу Ньютона
     while iter_count < apriori_estimate:
         iter_count += 1
         x_prev = x_next
         x_next = x_prev - f(x_prev) / df(x_prev)
         print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
         
-        # Якщо апостеріорна оцінка досягнута
         if abs(f(x_next)) <= eps and stop_iter == 0:
             stop_iter = iter_count
     
     if stop_iter == 0:
         stop_iter = iter_count
     
-    # Виведення результату
     print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
     
     return x_next, stop_iter
 
-# Приклад використання
 root_newton, steps_newton = newton_method(f, df, x0, eps)
 print(f"Корінь методом Ньютона: {root_newton}, кількість ітерацій апостеріорної оцінки: {steps_newton}")
