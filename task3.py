@@ -17,7 +17,7 @@ def f(x):
 # plt.show()
 
 def g(x):
-    return (2 - x**4) / 4
+    return np.arcsin((1/5) * (1 - x**2))
 
 
 def apriori_iteration_estimate(L, initial_error, eps):
@@ -54,7 +54,7 @@ def simple_iteration(f, g, x0, eps, L, initial_error):
             break
 
     print(f"Апостеріорна оцінка зупинилася на ітерації: {aposter_iter}")
-    return x_next, iter_count
+    return x_next1, aposter_iter
 
 x0 = 0.5
 L = 0.5                  
@@ -69,18 +69,14 @@ def relaxation_method(f, g, x0, eps, omega=1.5):
     iter_count = 0
     x_prev = x0
     x_next = x_prev + omega * (g(x_prev) - x_prev)
-    aposter_iter = 0
     x_prev1 = x0
-    x_next1 = x_prev + omega * (g(x_prev) - x_prev)
-    stop_iter = 0
-
-    M = np.eye(len(x0)) - omega * np.eye(len(x0))
-    rho_M = np.max(np.abs(np.linalg.eigvals(M)))  
+    x_next1 = x_prev1 + omega * (g(x_prev1) - x_prev1)
+    iter_count1 = 0
     
-    apriori_estimate = int(np.ceil(np.log(eps) / np.log(rho_M)))
+    apriori_estimate = int(np.ceil(np.log(eps / abs(x_next - x_prev)) / np.log(1 / omega)))
+    print("\nАпріорна оцінка кількості ітерацій:", apriori_estimate)
     
-    print("\nМетод релаксації:")
-    print(f"Апріорна оцінка кількості ітерацій: {apriori_estimate}")
+    print("Метод релаксації:")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
@@ -88,20 +84,14 @@ def relaxation_method(f, g, x0, eps, omega=1.5):
         x_prev = x_next
         x_next = x_prev + omega * (g(x_prev) - x_prev)
         print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
-    
-    while aposter_iter < apriori_estimate:
-        aposter_iter += 1
+        
+    while abs(x_next1 - x_prev1) > eps:
+        iter_count1 += 1
         x_prev1 = x_next1
         x_next1 = x_prev1 + omega * (g(x_prev1) - x_prev1)
-        
-        if abs(x_next - x_prev) <= eps and stop_iter == 0:
-            stop_iter = iter_count 
-
-    if stop_iter == 0:
-        stop_iter = iter_count
     
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
-    return x_next, stop_iter
+    print(f"Апостеріорна оцінка зупинилася на ітерації: {iter_count1}")
+    return x_next1, iter_count1
 
 root_relax, steps_relax = relaxation_method(f, g, x0, eps)
 print(f"Корінь методом релаксації: {root_relax}, кількість ітерацій апостеріорної оцінки: {steps_relax}")

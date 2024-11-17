@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 def f(x):
     return x**2 + np.sin(x) - 12*x - 0.25
 
-# x_vals = np.linspace(-4, 4, 400)
-# y_vals = f(x_vals)
+x_vals = np.linspace(-4, 4, 400)
+y_vals = f(x_vals)
 
-# plt.plot(x_vals, y_vals)
-# plt.axhline(0, color='red', linestyle='--')
-# plt.title('Графік функції f(x)')
-# plt.xlabel('x')
-# plt.ylabel('f(x)')
-# plt.grid(True)
-# plt.show()
+plt.plot(x_vals, y_vals)
+plt.axhline(0, color='red', linestyle='--')
+plt.title('Графік функції f(x)')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.grid(True)
+plt.show()
 
 def bisection_method(f, a, b, eps):
     if f(a) * f(b) >= 0:
@@ -55,7 +55,7 @@ def bisection_method(f, a, b, eps):
 
 
 
-a, b = -4, 4
+a, b = -2, 2
 eps = 0.0001
 
 root_bisect, steps_bisect = bisection_method(f, a, b, eps)
