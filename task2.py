@@ -70,8 +70,6 @@ print(f"Корінь методом простої ітерації: {root_iter}
 def df(x):
     return 4*x**3 + 4
 
-import numpy as np
-
 def newton_method(f, df, x0, eps):
 
     apriori_estimate = int(np.ceil(np.log2((x0 - (-x0)) / eps)))
