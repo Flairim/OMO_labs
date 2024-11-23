@@ -68,7 +68,7 @@ def g(x):
 
 def apriori_iteration_estimate(q):
 
-    return  round(math.log(abs( (g(2) - 2) / (1 - q) / eps))/ math.log(1/q)) + 1
+    return  round(math.log10(abs( (g(2) - 2) / (1 - q) / eps))/ math.log10(1/q)) + 1
 
 def simple_iteration(f, g, x0, eps):
 
