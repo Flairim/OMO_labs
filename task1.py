@@ -64,7 +64,7 @@ def g(x):
 
 def apriori_iteration_estimate(q):
 
-    return  np.floor(np.log10(abs( (g(2) - 2) / (1 - q) / eps))/ np.log10(1/q)) + 1
+    return  np.floor(np.log(abs( (g(x0) - x0) / (1 - q) / eps))/ np.log(1/q)) + 1
     
 def simple_iteration(f, g, x0, eps):
 
