@@ -1,12 +1,11 @@
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 
 def f(x):
     return x**2 + np.sin(x) - 12*x - 0.25
 
-# x_vals = np.linspace(-4, 4, 400)
-# y_vals = f(x_vals)
+x_vals = np.linspace(-4, 4, 400)
+y_vals = f(x_vals)
 
 # plt.plot(x_vals, y_vals)
 # plt.axhline(0, color='red', linestyle='--')
@@ -34,7 +33,6 @@ def bisection_method(f, a, b, eps):
         print(f"Ітерація {iter_count}: x = {c}, f(x) = {f(c)}")
         
         if f(c) == 0:
-            print(f"Знайдено точний корінь: {c}")
             stop_iter = iter_count
             break
         
@@ -46,8 +44,6 @@ def bisection_method(f, a, b, eps):
         if stop_iter == 0 and (b - a) / 2 <= eps:
             stop_iter = iter_count
 
-    if stop_iter == 0:
-        stop_iter = iter_count
     
     root = (a + b) / 2
     print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
@@ -55,9 +51,9 @@ def bisection_method(f, a, b, eps):
 
 
 
-a, b = -1, 1
+a, b = -0.4, 0.2
 eps = 0.0001
-x0 = 1.5
+x0 = -0.2
 q = 0.15
 
 root_bisect, steps_bisect = bisection_method(f, a, b, eps)
@@ -68,32 +64,36 @@ def g(x):
 
 def apriori_iteration_estimate(q):
 
-    return  round(math.log10(abs( (g(2) - 2) / (1 - q) / eps))/ math.log10(1/q)) + 1
-
+    return  np.floor(np.log10(abs( (g(2) - 2) / (1 - q) / eps))/ np.log10(1/q)) + 1
+    
 def simple_iteration(f, g, x0, eps):
 
     apriori_estimate = apriori_iteration_estimate(q)
     iter_count = 0
     x_prev = x0
-    x_next = g(x_prev)
     stop_iter = 0
+    stop_x = 0
 
-    print("Метод простої ітерації:")
+    print("\nМетод простої ітерації:")
     print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
         iter_count += 1
-        x_prev = x_next
         x_next = g(x_prev)
         print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
 
         
-        if stop_iter == 0 and abs(x_next - x_prev) <= eps:
+        if stop_iter == 0 and stop_x == 0 and abs(x_next - x_prev) < ((1-q)/q)*eps:
             stop_iter = iter_count
+            stop_x = x_next
+        
+        x_prev = x_next
+
+        
 
     print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
-    return x_next, stop_iter
+    return stop_x, stop_iter
 
 root_iter, steps_iter = simple_iteration(f, g, x0, eps)
 print(f"Корінь методом простої ітерації: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
