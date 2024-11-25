@@ -5,18 +5,6 @@ import math
 def f(x):
     return x**4 + 4*x - 2
 
-# # Побудова графіка функції
-# x_vals = np.linspace(-2, 2, 400)
-# y_vals = f(x_vals)
-
-# plt.plot(x_vals, y_vals)
-# plt.axhline(0, color='red', linestyle='--')
-# plt.title('Графік функції f(x)')
-# plt.xlabel('x')
-# plt.ylabel('f(x)')
-# plt.grid(True)
-# plt.show()
-
 def g(x):
     return (2 - x**4) / 4
 
@@ -36,7 +24,6 @@ def simple_iteration(f, g, x0, eps, q):
     stop_x = 0
 
     print("\nМетод простої ітерації:")
-    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
@@ -52,11 +39,11 @@ def simple_iteration(f, g, x0, eps, q):
         x_prev = x_next
 
         
-
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
+    print(f"\nАпріорна оцінка: {apriori_estimate}")
+    print(f"Апостеріорна оцінка: {stop_iter}")
     return stop_x, stop_iter
 
-x0 = 0.7
+x0 = 0.5
 q = 0.15
 eps = 0.0001
 
@@ -80,7 +67,7 @@ def newton_method(f, df, x0, eps, q1):
     stop_x = 0
 
     print("\nМетод Ньютона:")
-    print(f"Апріорна оцінка кількості ітерацій: {apriori_estimate}")
+
     print(f"Ітерація {iter_count}: x = {x0}, f(x) = {f(x0)}")
     
     while iter_count < apriori_estimate:
@@ -93,8 +80,9 @@ def newton_method(f, df, x0, eps, q1):
         if erorr <= eps and stop_x == 0 and stop_iter == 0:
             stop_iter = iter_count
             stop_x = x_next
-    
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
+
+    print(f"/nАпріорна оцінка: {apriori_estimate}")   
+    print(f"Апостеріорна оцінка: {stop_iter}")
     
     return stop_x, stop_iter
 

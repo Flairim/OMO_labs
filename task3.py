@@ -5,17 +5,6 @@ import math
 def f(x):
     return x**2 + 5 * np.sin(x) - 1
 
-# x_vals = np.linspace(-3, 3, 400)
-# y_vals = f(x_vals)
-
-# plt.plot(x_vals, y_vals)
-# plt.axhline(0, color='red', linestyle='--')
-# plt.title('Графік функції f(x)')
-# plt.xlabel('x')
-# plt.ylabel('f(x)')
-# plt.grid(True)
-# plt.show()
-
 def g(x):
     return np.arcsin((1-x**2)/5)
 

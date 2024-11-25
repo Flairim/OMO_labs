@@ -20,13 +20,12 @@ def bisection_method(f, a, b, eps):
         raise ValueError("Функція повинна змінювати знак на кінцях інтервалу.")
     
     apriori_estimate = np.floor(np.log2((b - a) / eps))
-    print(f"Апріорна оцінка кількості ітерацій для методу дихотомії: {apriori_estimate}")
     
     iter_count = 0
     stop_iter = 0  
 
     print("Метод дихотомії:")
-
+    
     while iter_count < apriori_estimate:
         iter_count += 1
         c = (a + b) / 2
@@ -46,15 +45,16 @@ def bisection_method(f, a, b, eps):
 
     
     root = (a + b) / 2
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
+    print(f"Апріорна оцінка: {apriori_estimate}")
+    print(f"Апостеріорна оцінка: {stop_iter}")
     return root, stop_iter
 
 
 
-a, b = -0.4, 0.2
+a, b = -0.1, 0.1
 eps = 0.0001
-x0 = -0.2
-q = 0.15
+x0 = 0
+q = 0.18
 
 root_bisect, steps_bisect = bisection_method(f, a, b, eps)
 print(f"Корінь методом дихотомії: {root_bisect}, кількість ітерацій апостеріорної оцінки: {steps_bisect}")
@@ -75,7 +75,6 @@ def simple_iteration(f, g, x0, eps):
     stop_x = 0
 
     print("\nМетод простої ітерації:")
-    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
@@ -91,8 +90,8 @@ def simple_iteration(f, g, x0, eps):
         x_prev = x_next
 
         
-
-    print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
+    print(f"\nАпріорна оцінка: {apriori_estimate}")
+    print(f"Апостеріорна оцінка: {stop_iter}")
     return stop_x, stop_iter
 
 root_iter, steps_iter = simple_iteration(f, g, x0, eps)
