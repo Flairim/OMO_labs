@@ -54,7 +54,7 @@ def df(x):
     return 4*x**3 + 4
 
 def apriori_estimation_iteration(q):
-    return math.log(round((math.log(0.12/eps))/(math.log(1/q)) + 1), 2) + 1
+    return math.log(np.floor((math.log(0.12/eps))/(math.log(1/q)) + 1), 2) + 1
 
 def newton_method(f, df, x0, eps, q1):
 
@@ -81,7 +81,7 @@ def newton_method(f, df, x0, eps, q1):
             stop_iter = iter_count
             stop_x = x_next
 
-    print(f"/nАпріорна оцінка: {apriori_estimate}")   
+    print(f"\nАпріорна оцінка: {apriori_estimate}")   
     print(f"Апостеріорна оцінка: {stop_iter}")
     
     return stop_x, stop_iter

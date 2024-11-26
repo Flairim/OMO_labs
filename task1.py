@@ -23,7 +23,7 @@ def bisection_method(f, a, b, eps):
         c = (a + b) / 2
         print(f"Ітерація {iter_count}: x = {c}, f(x) = {f(c)}")
         
-        if f(c) == 0:
+        if stop_iter == 0 and f(c) == 0:
             stop_iter = iter_count
             break
         
@@ -32,8 +32,9 @@ def bisection_method(f, a, b, eps):
         else:
             a = c
         
-        if stop_iter == 0 and (b - a) / 2 <= eps:
+        if stop_iter == 0 and  (b - a) / 2 <= eps:
             stop_iter = iter_count
+            break
 
     
     root = (a + b) / 2

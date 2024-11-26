@@ -24,7 +24,6 @@ def simple_iteration(f, g, x0, eps, q):
     stop_x = 0
 
     print("\nМетод простої ітерації:")
-    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
@@ -40,16 +39,16 @@ def simple_iteration(f, g, x0, eps, q):
         x_prev = x_next
 
         
-
+    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
     return stop_x, stop_iter
 
 q = 0.79
 eps = 0.0001
 
-root_iter, steps_iter = simple_iteration(f, g, x0, eps, q)
+# root_iter, steps_iter = simple_iteration(f, g, x0, eps, q)
 
-print(f"Корінь методом простої ітерації: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
+# print(f"Корінь методом простої ітерації: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
 
 
 def apriori_estimation_relaxation(z0, q):
@@ -76,6 +75,9 @@ def relaxation_method_(x0,tau, z0, q):
             stop_x = x1
 
         x0 = x1
+        
+    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
+    print(f"Апостеріорна оцінка кількості ітерацій: {stop_iter}")
 
     return stop_x, stop_iter
 
@@ -84,6 +86,7 @@ M1 = 8.0863
 z0 = x0 + 2.22727
 q1 = (M1 - m1) / (M1 + m1)
 tau_opt = 2 / (m1 + M1)
+
 
 root_iter, steps_iter = relaxation_method_(x0, tau_opt, z0, q1)
 print(f"Корінь методом релаксції: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
