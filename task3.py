@@ -6,10 +6,10 @@ def f(x):
     return x**2 + 5 * np.sin(x) - 1
 
 def g(x):
-    return np.arcsin((1-x**2)/5)
+    return np.arcsin((1-(x**2))/5)
 
 
-x0 = -2.25
+x0 = -2.15
 
 def apriori_iteration_estimate(q):
 
@@ -44,7 +44,7 @@ def simple_iteration(f, g, x0, eps, q):
     print(f"Апостеріорна оцінка зупинилася на ітерації: {stop_iter}")
     return stop_x, stop_iter
 
-q = 0.20
+q = 0.79
 eps = 0.0001
 
 root_iter, steps_iter = simple_iteration(f, g, x0, eps, q)
