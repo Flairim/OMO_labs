@@ -7,14 +7,6 @@ def f(x):
 x_vals = np.linspace(-4, 4, 400)
 y_vals = f(x_vals)
 
-# plt.plot(x_vals, y_vals)
-# plt.axhline(0, color='red', linestyle='--')
-# plt.title('Графік функції f(x)')
-# plt.xlabel('x')
-# plt.ylabel('f(x)')
-# plt.grid(True)
-# plt.show()
-
 def bisection_method(f, a, b, eps):
     if f(a) * f(b) >= 0:
         raise ValueError("Функція повинна змінювати знак на кінцях інтервалу.")
