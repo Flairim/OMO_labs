@@ -61,7 +61,6 @@ def relaxation_method_(x0,tau, z0, q):
     apriori_estimate = apriori_estimation_relaxation(z0, q)
 
     print("\nМетод релаксації:")
-    print(f"\nАпріорна оцінка кількості ітерацій: {apriori_estimate}")
     print(f"Ітерація {iter_count}: x = {x0}, f(x) = {f(x0)}")
 
     while iter_count < apriori_estimate:
