@@ -8,32 +8,32 @@ x_vals = np.linspace(-4, 4, 400)
 y_vals = f(x_vals)
 
 def bisection_method(f, a, b, eps):
-    if f(a) * f(b) >= 0:
-        raise ValueError("Функція повинна змінювати знак на кінцях інтервалу.")
-    
     apriori_estimate = np.floor(np.log2((b - a) / eps))
     
     iter_count = 0
     stop_iter = 0  
-
+    stop_x = 0
+    
     print("Метод дихотомії:")
     
     while iter_count < apriori_estimate:
         iter_count += 1
-        c = (a + b) / 2
-        print(f"Ітерація {iter_count}: x = {c}, f(x) = {f(c)}")
+        x = (a + b) / 2
+        print(f"Ітерація {iter_count}: x = {x}, f(x) = {f(x)}")
         
-        if stop_iter == 0 and f(c) == 0:
+        if stop_iter == 0 and stop_x == 0 and f(x) == 0:
             stop_iter = iter_count
+            stop_x = x
             break
         
-        if f(a) * f(c) < 0:
-            b = c
+        if f(a) * f(x) < 0:
+            b = x
         else:
-            a = c
+            a = x
         
-        if stop_iter == 0 and  (b - a) / 2 <= eps:
+        if stop_iter == 0 and stop_x == 0 and  (b - a) / 2 <= eps:
             stop_iter = iter_count
+            stop_x = x
             break
 
     
