@@ -15,7 +15,7 @@ def apriori_iteration_estimate(q):
 
     return  np.floor(np.log(abs( (g(x0) - x0) / (1 - q) / eps))/ np.log(1/q)) + 1
     
-def simple_iteration(f, g, x0, eps, q):
+def itersimple_iteration(f, g, x0, eps):
 
     apriori_estimate = apriori_iteration_estimate(q)
     iter_count = 0
@@ -23,7 +23,7 @@ def simple_iteration(f, g, x0, eps, q):
     stop_iter = 0
     stop_x = 0
 
-    print("\nМетод простої ітерації:")
+    print("Метод простої ітерації(Апріорна оцінка):")
     print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
     
     while iter_count < apriori_estimate:
@@ -38,55 +38,81 @@ def simple_iteration(f, g, x0, eps, q):
         
         x_prev = x_next
 
+def simple_iteration(f, g, x0, eps, max_iter = 100):
+
+    iter_count = 0
+    x_prev = x0
+
+    print("\nМетод простої ітерації(Апостеріорна оцінка):")
+    print(f"Ітерація {iter_count}: x = {x_prev}, f(x) = {f(x_prev)}")
+    
+    while iter_count < max_iter:
+        iter_count += 1
+        x_next = g(x_prev)
+        print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
         
-    print(f"\nАпріорна оцінка: {apriori_estimate}")
-    print(f"Апостеріорна оцінка: {stop_iter}")
-    return stop_x, stop_iter
+        if abs(x_next - x_prev) < ((1-q)/q)*eps:
+            break
+        
+        x_prev = x_next
 
 x0 = 0.5
 q = 0.15
 eps = 0.0001
 
-root_iter, steps_iter = simple_iteration(f, g, x0, eps, q)
+itersimple_iteration(f, g, x0, eps)
+simple_iteration(f, g, x0, eps)
 
-print(f"Корінь методом простої ітерації: {root_iter}, кількість ітерацій апостеріорної оцінки: {steps_iter}")
 def df(x):
     return 4*x**3 + 4
 
 def apriori_estimation_iteration(q):
     return math.log(np.floor((math.log(0.12/eps))/(math.log(1/q)) + 1), 2) + 1
 
-def newton_method(f, df, x0, eps, q1):
+def iternewton_method(f, df, x0, eps, q1):
 
     apriori_estimate = apriori_estimation_iteration(q1)
     
     iter_count = 0
     x_next = x0 - f(x0) / df(x0)
     x_prev = x0
-    stop_iter = 0
-    stop_x = 0
 
-    print("\nМетод Ньютона:")
+
+    print("\nМетод Ньютона(Апріорна оцінка):")
 
     print(f"Ітерація {iter_count}: x = {x0}, f(x) = {f(x0)}")
     
     while iter_count < apriori_estimate:
         iter_count += 1
         x_next = x_prev - f(x_prev) / df(x_prev)
+        x_prev = x_next
+        print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
+
+def newton_method(f, df, x0, eps, q1, max_iter = 100):
+
+    
+    iter_count = 0
+    x_next = x0 - f(x0) / df(x0)
+    x_prev = x0
+
+
+    print("\nМетод Ньютона(Апостеріорна оцінка):")
+
+    print(f"Ітерація {iter_count}: x = {x0}, f(x) = {f(x0)}")
+    
+    while iter_count < max_iter:
+        iter_count += 1
+        x_next = x_prev - f(x_prev) / df(x_prev)
         erorr = abs(x_next - x_prev)
         x_prev = x_next
         print(f"Ітерація {iter_count}: x = {x_next}, f(x) = {f(x_next)}")
         
-        if erorr <= eps and stop_x == 0 and stop_iter == 0:
-            stop_iter = iter_count
-            stop_x = x_next
+        if erorr <= eps:
+            break
 
-    print(f"\nАпріорна оцінка: {apriori_estimate}")   
-    print(f"Апостеріорна оцінка: {stop_iter}")
-    
-    return stop_x, stop_iter
 
-q1 = 0.169
+q1 = 0.00708
 
-root_newton, steps_newton = newton_method(f, df, x0, eps, q1)
-print(f"Корінь методом Ньютона: {root_newton}, кількість ітерацій апостеріорної оцінки: {steps_newton}")
+iternewton_method(f, df, x0, eps, q1)
+newton_method(f, df, x0, eps, q1)
+
